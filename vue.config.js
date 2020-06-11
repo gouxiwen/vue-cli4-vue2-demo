@@ -3,9 +3,14 @@ if (context === 'calljs') {
   module.exports = require('./config/calljs');
 } else {
   module.exports = {
+    lintOnSave: true, // 配置eslint-loader 取值有true，false，error，取error就会在浏览器页面显示
     devServer: {
       port: 8100,
       open: true,
+      overlay: {//设置浏览器页面显示
+        warnings: false,
+        errors: true
+      },
       // autoOpenBrowser: true,
       proxy: {
         '^/gaea': {

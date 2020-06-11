@@ -9,14 +9,14 @@
 // import Upload from './components/Upload.vue'
 // import callPc from './config/CallTlinkpc'
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // Upload
   },
   mounted() {
     // console.log(callPc)
   }
-}
+};
 </script>
 
 <style>
