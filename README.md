@@ -1,4 +1,4 @@
-# qiniu-upload
+# 这是一个综合代码，里面有七牛上传/打包pcsdk/还有几个日历demo
 
 ## Project setup
 ```
