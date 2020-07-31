@@ -1181,7 +1181,7 @@
               ],
               cache: true,
               cacheIdentifier: '11a8c0e2',
-              emitWarning: false,
+              emitWarning: true,
               emitError: false,
               eslintPath: '/Users/getech/Desktop/gitCode/qiniu-upload/node_modules/eslint',
               formatter: undefined
