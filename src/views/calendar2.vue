@@ -95,6 +95,16 @@
 
 <script>
 import calendarLocal from "../components/calendar.vue";
+// Props
+// :value Array default:[] * default value for calendar默认日期
+// :begin Array default:[] * limit begin select date
+// :end Array default:[] * limit end select date
+// :range Bool default:false * You can select a time period您可以选择时间段
+// :zero Bool default:false * Date zero是否小于10补零
+// :lunar Bool default:false * Show Chinese Lunar是否显示农历
+// :weeks Array * According to the system language changes or custom周名称显示
+// :months Array * According to the system language changes or custom月名称显示
+// :events Object * Customize calendar events
 export default {
   name: "app",
   components: {
