@@ -39,6 +39,14 @@ export default new Router({
       meta: {
         index: 0,
       },
+    },
+    {
+      path: '/calendar3',
+      name: 'calendar3',
+      component: () => import('../views/calendar3.vue'),
+      meta: {
+        index: 0,
+      },
     }
   ]
 })

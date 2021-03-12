@@ -71,6 +71,21 @@ export default {
 
 <style lang="scss">
 .calendar1 {
+  .wh_content_all {
+    background-color: white;
+    .wh_jiantou1 {
+      border-top: 2px solid black;
+      border-left: 2px solid black;
+    }
+    .wh_jiantou2 {
+      border-top: 2px solid black;
+      border-right: 2px solid black;
+    }
+    .wh_content_li,
+    .wh_content_item {
+      color: black;
+    }
+  }
   .mark1 {
     background-color: red;
   }

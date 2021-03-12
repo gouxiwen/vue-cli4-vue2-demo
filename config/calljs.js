@@ -20,10 +20,10 @@ module.exports = {
     con.output.filename('[name].min.js');
     con.output.libraryTarget('umd');
     con.output.library('callPc'), // 库名，Windows下挂载的全局变量
-    con.output.globalObject('this'), // 定义全局变量,兼容node和浏览器运行，避免出现"window is not defined"的情况
-    con.optimization.splitChunks({
-      cacheGroups: {},
-    });
+      con.output.globalObject('this'), // 定义全局变量,兼容node和浏览器运行，避免出现"window is not defined"的情况
+      con.optimization.splitChunks({ // 不拆分包
+        cacheGroups: {},
+      });
     con.optimization.minimize(false) // 禁止压缩
     con.output.filename('[name].js');
     // 禁用插件

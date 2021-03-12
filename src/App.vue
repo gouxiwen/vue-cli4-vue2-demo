@@ -2,8 +2,9 @@
   <div id="app">
     <router-link to="/upload">upload</router-link>|
     <router-link to="/calendar">calendar</router-link>|
-    <router-link to="/calendar1">calendar1</router-link>
-    <router-link to="/calendar2">calendar2</router-link>
+    <router-link to="/calendar1">calendar1</router-link>|
+    <router-link to="/calendar2">calendar2</router-link>|
+    <router-link to="/calendar3">calendar3</router-link>
     <router-view></router-view>
   </div>
 </template>
