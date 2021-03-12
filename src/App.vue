@@ -4,7 +4,9 @@
     <router-link to="/calendar">calendar</router-link>|
     <router-link to="/calendar1">calendar1</router-link>|
     <router-link to="/calendar2">calendar2</router-link>|
-    <router-link to="/calendar3">calendar3</router-link>
+    <router-link to="/calendar3">calendar3</router-link>|
+    <router-link to="/videoJs">videoJs</router-link>|
+    <router-link to="/fullCalendarDemo">fullCalendarDemo</router-link>
     <router-view></router-view>
   </div>
 </template>

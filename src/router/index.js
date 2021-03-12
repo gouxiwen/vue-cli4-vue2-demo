@@ -47,6 +47,22 @@ export default new Router({
       meta: {
         index: 0,
       },
+    },
+    {
+      path: '/videoJs',
+      name: 'videoJs',
+      component: () => import('../views/videoJs.vue'),
+      meta: {
+        index: 0,
+      },
+    },
+    {
+      path: '/fullCalendarDemo',
+      name: 'fullCalendarDemo',
+      component: () => import('../views/fullCalendarDemo.vue'),
+      meta: {
+        index: 0,
+      },
     }
   ]
 })

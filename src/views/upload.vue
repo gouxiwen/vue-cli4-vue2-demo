@@ -1,6 +1,6 @@
 <template>
-  <div class="upload" v-if="showVideo">
-    <!-- <h1>七牛上传H5页面</h1>
+  <div class="upload">
+    <h1>七牛上传H5页面</h1>
     <div class="fl">
       <el-upload
         ref="upload"
@@ -40,23 +40,7 @@
       class="a3"
       mon="ct=1&amp;a=1&amp;c=top&amp;pn=0"
       >重温习近平"4·19"重要讲话 打好互联网战"疫"</a
-    > -->
-    <video
-      v-show="showVideo"
-      class="video video-js vjs-big-play-centered"
-      ref="video"
-      poster="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3545731829,3670776579&fm=26&gp=0.jpg"
-      controls=""
-      :autoplay="false"
-      data-setup="{}"
     >
-      <source
-        ref="source"
-        src="https://mtestdl.getech.cn/1609234676926_7fd8f574ff352589113bdb8deb74ed44.mp4"
-        type="video/mp4"
-      />
-    </video>
-    <button @click="refreshVideo">刷新视频</button>
   </div>
 </template>
 
@@ -89,7 +73,6 @@ export default {
       appDemon: "",
       message: "",
       selectMembersUsers: [],
-      showVideo: true,
     };
   },
   mounted() {
@@ -144,26 +127,6 @@ export default {
     });
   },
   methods: {
-    refreshVideo() {
-      try {
-        // this.showVideo = false;
-        sessionStorage.setItem("videoSrc", location.href);
-        location.href = sessionStorage.getItem("videoSrc");
-        // window.location.reload();
-        // location.replace(location.href);
-        setTimeout(() => {
-          this.showVideo = true;
-          // this.$nextTick(() => {
-          // this.$refs.source.src =
-          //   "https://mtestdl.getech.cn/1609235320417_afc97e69d85a2a899ec65f4a8198b064.mp4";
-          // console.log(this.$refs.video);
-          // this.$refs.video.load();
-          //   });
-        }, 1000);
-      } catch (error) {
-        alert(error);
-      }
-    },
     send() {
       let data = {
         selectMemberType: "cc",
@@ -310,10 +273,6 @@ export default {
   .a {
     width: 100%;
     height: 50px;
-  }
-  .video {
-    width: 100%;
-    height: 300px;
   }
 }
 </style>
