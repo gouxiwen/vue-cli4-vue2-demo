@@ -1,7 +1,7 @@
 
 <template>
-  <div class='demo-app'>
-    <div class='demo-app-sidebar'>
+  <div @click="visible = false" class='demo-app'>
+    <!-- <div class='demo-app-sidebar'>
       <div class='demo-app-sidebar-section'>
         <h2>Instructions</h2>
         <ul>
@@ -29,7 +29,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </div> -->
     <div class='demo-app-main'>
       <FullCalendar
         class='demo-app-calendar'
@@ -37,11 +37,35 @@
         :options='calendarOptions'
       >
         <template v-slot:eventContent='arg'>
-          <b>{{ arg.timeText }}</b>
-          <div>{{ arg.event.title }}</div>
+          <div class="event-wrap">
+            <div class="color-block" :style="{backgroundColor: arg.event.backgroundColor}"></div>
+            <div class="content">{{ arg.event.title }}，</div>
+            <div class="content" v-if="arg.event.detail">{{arg.event.detail}}，</div>
+            <div class="content">{{handleDateFormat(arg.event.start)}}-{{handleDateFormat(arg.event.end)}}</div>
+          </div>
+          <!-- <b>{{ arg.timeText }}</b> -->
         </template>
       </FullCalendar>
     </div>
+    <el-popover
+      class="popperClass"
+      :style="{'left': pLeft + 'px', 'top': pTop + 'px'}"
+      :placement="position"
+      width="400"
+      trigger="click"
+      v-model="visible">
+      <div class="pop-solt" @click.stop="() => {}">
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+        这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
+      </div>
+      <el-button >click 激活</el-button>
+    </el-popover>
   </div>
 </template>
 
@@ -56,6 +80,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 // import '@fullcalendar/resource-timeline/main.css'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import zhLocale from '@fullcalendar/core/locales/zh-cn';
+import moment from "moment";
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -67,6 +92,10 @@ export default {
       // console.log(calendarApi)
     })
     return {
+      visible: false,
+      pLeft: 0,
+      pTop: 0,
+      position: 'right',
       calendarOptions: {
       //  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // 开发使用的key，生产中使用需要购买许可证密钥
        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', // 网上找的
@@ -146,6 +175,20 @@ export default {
               title: '3',
               position: '2003'
             },
+            // {
+            //   id: 'a',
+            //   title: 'Room A'
+            // },
+            // {
+            //   id: 'a1',
+            //   parentId: 'a',
+            //   title: 'Room A1'
+            // },
+            // {
+            //   id: 'a2',
+            //   parentId: 'a',
+            //   title: 'Room A2'
+            // }
         ],
         // 自定义时间线视图显示3个月
         views: {
@@ -214,19 +257,58 @@ export default {
       
     },
     handleEventClick(clickInfo) {
-      clickInfo.el.style.borderColor = 'red'
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
+      // clickInfo.el.style.borderColor = 'red'
+      // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      //   clickInfo.event.remove()
+      // }
+      console.log(clickInfo)
+      this.visible = true
+      this.$nextTick(() => {
+        let top,left
+        let mouseY = clickInfo.jsEvent.clientY
+        let mouseX = clickInfo.jsEvent.clientX
+        let viewWidth = document.body.clientWidth // 页面视图宽度
+        let viewHeight = document.body.clientHeight
+        let popWidth = document.querySelector('.el-popover').offsetWidth
+        let popHeight = document.querySelector('.el-popover').offsetHeight
+        console.log('mouseY', mouseY)
+        console.log('popHeight', popHeight)
+        if (mouseY + popHeight < viewHeight) {
+          top = mouseY
+        }else if (mouseY + popHeight > viewHeight && mouseY - popHeight > 0) {
+          top = mouseY - popHeight
+        } else {
+          top = 10
+        }
+        // 目标元素宽度
+        let currentDomWidth = clickInfo.el.offsetWidth
+        // 目标元素右边位置
+        let currentDomRight = mouseX - clickInfo.jsEvent.layerX + currentDomWidth  + clickInfo.el.offsetLeft //  加上右padding
+        // 目标元素左边位置
+        let currentDomLeft = mouseX - clickInfo.jsEvent.layerX - clickInfo.el.offsetLeft // 减去左padding
+        if (currentDomRight + popWidth < viewWidth ) {
+          left = currentDomRight
+        }else if (currentDomRight + popWidth > viewWidth && currentDomLeft - popWidth > 0) {
+          left = currentDomLeft - popWidth
+        } else {
+          left = 10
+        }
+        this.pLeft = left
+        this.pTop = top
+        clickInfo.jsEvent.stopPropagation()
+      })
     },
     handleEvents(events) {
       this.currentEvents = events
+    },
+    handleDateFormat(time, format = 'HH:mm') {
+      return moment(time).format(format)
     }
   }
 }
 </script>
 
-<style lang='css'>
+<style lang='scss'>
 h2 {
   margin: 0;
   font-size: 16px;
@@ -239,7 +321,7 @@ li {
   margin: 1.5em 0;
   padding: 0;
 }
-b { /* used for event dates/times */
+b {
   margin-right: 3px;
 }
 .demo-app {
@@ -260,9 +342,32 @@ b { /* used for event dates/times */
 .demo-app-main {
   flex-grow: 1;
   padding: 3em;
+  .event-wrap {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    word-break: break-all;
+    .color-block {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .content {
+      font-size: 12px;
+    }
+  }
 }
-.fc { /* the calendar root */
+.fc {
   max-width: 1100px;
   margin: 0 auto;
+}
+.popperClass {
+  position: fixed;
+  z-index: 10;
+  .pop-solt {
+  }
+  .el-button {
+    display: none;
+  }
 }
 </style>
