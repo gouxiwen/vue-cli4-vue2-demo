@@ -51,9 +51,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import '@fullcalendar/common/main.css'
-import '@fullcalendar/timeline/main.css'
-import '@fullcalendar/resource-timeline/main.css'
+// import '@fullcalendar/common/main.css'
+// import '@fullcalendar/timeline/main.css'
+// import '@fullcalendar/resource-timeline/main.css'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import zhLocale from '@fullcalendar/core/locales/zh-cn';
 export default {
@@ -68,7 +68,8 @@ export default {
     })
     return {
       calendarOptions: {
-       schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // 开发使用的key，生产中使用需要购买许可证密钥
+      //  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', // 开发使用的key，生产中使用需要购买许可证密钥
+       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', // 网上找的
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
@@ -79,7 +80,7 @@ export default {
             myRTLViewButton: {
                 text: '时间线',
                 click() {
-                    calendarApi.changeView('resourceTimeline')
+                  calendarApi.changeView('resourceTimeline');
                 }
             },
             mylocalButton: {
@@ -109,16 +110,42 @@ export default {
         // locale: 'zh-cn'
         locale: zhLocale,
         firstDay: 0, // 第一天从周日开始
+        // 自定义时间线的列
+        resourceAreaColumns: [
+          {
+          group: true,
+          field: 'building',
+          headerContent: '分组'
+        },
+        {
+          field: 'title',
+          headerContent: '会议室'
+        },
+        {
+          field: 'position',
+          headerContent: '位置'
+        }
+      ],
         // 这里的id对应于于日程（event）中的resourceId
         resources: [
             {
-            id: 0,
-            title: '1',
-          },
+              id: 0,
+              building: '分组1',
+              title: '1',
+              position: '2003'
+            },
             {
-            id: 1,
-            title: '2',
-          },
+              id: 1,
+              building: '分组1',
+              title: '2',
+              position: '2003'
+            },
+            {
+              id: 2,
+              building: '分组1',
+              title: '3',
+              position: '2003'
+            },
         ],
         // 自定义时间线视图显示3个月
         views: {
@@ -145,7 +172,8 @@ export default {
         eventRemove:
         */
       },
-      currentEvents: []
+      currentEvents: [],
+      clickCount: 0, // 用来模拟双击事件
     }
   },
   methods: {
@@ -156,6 +184,19 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect(selectInfo) {
+      this.clickCount++
+      setTimeout(() => {
+        if (this.clickCount === 2) {
+          console.log('双击')
+          this.handleDbClickSelect(selectInfo)
+        } else if (this.clickCount === 1) {
+          console.log('单击')
+          this.handleClickSelect(selectInfo)
+        }
+        this.clickCount = 0
+      },300)
+    },
+    handleClickSelect(selectInfo) {
       let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
       calendarApi.unselect() // clear date selection
@@ -168,6 +209,9 @@ export default {
           allDay: selectInfo.allDay
         })
       }
+    },
+    handleDbClickSelect() {
+      
     },
     handleEventClick(clickInfo) {
       clickInfo.el.style.borderColor = 'red'

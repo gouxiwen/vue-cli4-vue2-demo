@@ -20,6 +20,16 @@ export const INITIAL_EVENTS = [
     end: todayStr + 'T15:00:00',
     backgroundColor: 'green',
     borderColor: 'green'
+  },
+  {
+    // id: createEventId(),
+    id: 2,
+    resourceId: 2,
+    title: 'Timed event',
+    start: todayStr + 'T16:00:00',
+    end: todayStr + 'T18:00:00',
+    backgroundColor: 'yellow',
+    borderColor: 'yellow'
   }
 ]
 
