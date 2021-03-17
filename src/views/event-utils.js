@@ -25,7 +25,9 @@ export const INITIAL_EVENTS = [
     // end: '1615878000000',  // 不支持的时间格式
     end: 1615878000000,
     backgroundColor: 'green',
-    borderColor: 'green'
+    borderColor: 'green',
+    editable: false
+
   },
   {
     // id: createEventId(),
@@ -47,6 +49,19 @@ export const INITIAL_EVENTS = [
     end: '2021-03-30 14:00:00',
     backgroundColor: 'gray',
     borderColor: 'gray'
+  },
+  {
+    start: '2021-03-31 10:00:00',
+    end: '2021-03-31 16:00:00',
+    display: 'background', //  背景事件
+    color: '#ff9f89'
+  },
+  {
+    start: '2021-04-01 10:00:00',
+    end: '2021-04-01 16:00:00',
+    allDay: true,
+    display: 'background',
+    color: 'pink'
   }
 ]
 

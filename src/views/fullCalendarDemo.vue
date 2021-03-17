@@ -36,15 +36,14 @@
         ref="fullCalendar"
         :options='calendarOptions'
       >
-        <template v-slot:eventContent='arg'>
+        <!-- <template v-slot:eventContent='arg'>
           <div class="event-wrap">
             <div class="color-block" :style="{backgroundColor: arg.event.backgroundColor}"></div>
             <div class="content">{{ arg.event.title }}，</div>
             <div class="content" v-if="arg.event.detail">{{arg.event.detail}}，</div>
             <div class="content">{{handleDateFormat(arg.event.start)}}-{{handleDateFormat(arg.event.end)}}</div>
           </div>
-          <!-- <b>{{ arg.timeText }}</b> -->
-        </template>
+        </template> -->
       </FullCalendar>
     </div>
     <el-popover
@@ -126,8 +125,14 @@ export default {
           // right: 'myMothViewButton,myWeekViewButton,myDayViewButton'
         },
         initialView: 'dayGridMonth',
+        events:[], // 事件数据源，可以是你定义的一个数组，一个函数，一个返回json的接口
+        eventSources:[], // 是指定多个数据源的途径，值为数组类型。eventSources是events选项的一种替代。eventSources里可以是数组数据、JSON数据、函数数据、数据源对象(Event Source Object)
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-        editable: true, // 是否允许事件编辑
+        editable: true, // 默认false，是否允许事件编辑（可以整体拖动和调整持续时间，也就是结束时间），全局设置，单个事件的editable可以覆盖
+        eventStartEditable: true, //  是否允许通过整体拖动编辑开始时间，全局设置，单个事件的startEditable可以覆盖
+        eventResizableFromStart: true, // 默认false  是否允许编辑开始时间
+        eventDurationEditable: true, //  是否允许编辑时间的持续时间，也就是结束时间，全局设置，单个事件的durationEditable可以覆盖
+        eventResourceEditable: false, // 是否允许资源resources编辑，次选项默认false但是继承editable，如果要单独设置resources，则将editable设为false，将此设为true，全局设置，单个事件的resourceEditable可以覆盖
         selectable: true, // 是否允许用户单击或者拖拽日历中的天和时间隙
         selectMirror: true, // 用户拖动时是否绘制“占位符”事件。
         dayMaxEvents: false, // 限制一天的最大数，超出日历块高度后就用more显示，默认false
@@ -136,6 +141,7 @@ export default {
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
+        eventResize: this.handleEventResize,
         // locale: 'zh-cn'
         locale: zhLocale,
         firstDay: 0, // 第一天从周日开始
@@ -271,8 +277,6 @@ export default {
         let viewHeight = document.body.clientHeight
         let popWidth = document.querySelector('.el-popover').offsetWidth
         let popHeight = document.querySelector('.el-popover').offsetHeight
-        console.log('mouseY', mouseY)
-        console.log('popHeight', popHeight)
         if (mouseY + popHeight < viewHeight) {
           top = mouseY
         }else if (mouseY + popHeight > viewHeight && mouseY - popHeight > 0) {
@@ -300,6 +304,9 @@ export default {
     },
     handleEvents(events) {
       this.currentEvents = events
+    },
+    handleEventResize(events) {
+      console.log('EventResize', events.event)
     },
     handleDateFormat(time, format = 'HH:mm') {
       return moment(time).format(format)
