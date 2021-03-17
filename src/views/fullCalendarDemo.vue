@@ -127,7 +127,7 @@ export default {
         initialView: 'dayGridMonth',
         events:[], // 事件数据源，可以是你定义的一个数组，一个函数，一个返回json的接口
         eventSources:[], // 是指定多个数据源的途径，值为数组类型。eventSources是events选项的一种替代。eventSources里可以是数组数据、JSON数据、函数数据、数据源对象(Event Source Object)
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        // initialEvents: INITIAL_EVENTS, // 初始化事件，也可以通过events的接口请求
         editable: true, // 默认false，是否允许事件编辑（可以整体拖动和调整持续时间，也就是结束时间），全局设置，单个事件的editable可以覆盖
         eventStartEditable: true, //  是否允许通过整体拖动编辑开始时间，全局设置，单个事件的startEditable可以覆盖
         eventResizableFromStart: true, // 默认false  是否允许编辑开始时间
@@ -142,6 +142,7 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         eventResize: this.handleEventResize,
+        height: "100%",
         // locale: 'zh-cn'
         locale: zhLocale,
         firstDay: 0, // 第一天从周日开始
@@ -224,6 +225,11 @@ export default {
       currentEvents: [],
       clickCount: 0, // 用来模拟双击事件
     }
+  },
+  mounted() {
+      setTimeout(() => {
+          this.calendarOptions.events = INITIAL_EVENTS
+      }, 10);
   },
   methods: {
     hendleChangelangue() {
