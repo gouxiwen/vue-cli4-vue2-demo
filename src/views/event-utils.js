@@ -35,8 +35,8 @@ export const INITIAL_EVENTS = [
     resourceId: 1,
     // resourceIds: [1,2], // 关联多个资源
     title: 'T信周会',
-    // start: todayStr + 'T16:00:00',
-    start: 1615870000000,
+    start: todayStr + 'T16:00:00',
+    // start: 1615870000000,
     end: todayStr + 'T18:00:00',
     backgroundColor: 'gray',
     borderColor: 'gray'

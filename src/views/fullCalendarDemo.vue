@@ -142,6 +142,7 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         eventResize: this.handleEventResize,
+        datesSet: this.handleDatesSet,
         height: "100%",
         // locale: 'zh-cn'
         locale: zhLocale,
@@ -231,7 +232,49 @@ export default {
           this.calendarOptions.events = INITIAL_EVENTS
       }, 10);
   },
+  destroyed() {
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+  },
   methods: {
+    // 对组件做一些二次加工，添加当前时间线
+    rebuildFullendar() {
+      clearInterval(this.timer)
+      this.timer = null
+      let tbody = document.querySelector('.fc-timegrid-slots table tbody')
+      tbody.className = 'tbodyclass'
+      let timeLine = document.createElement("div")
+      timeLine.className = 'now-time'
+      let timeLineDot = document.createElement("div")
+      timeLineDot.className = 'now-time-dot'
+      let timeText = document.createElement("div")
+      timeText.className = 'now-time-text'
+      tbody.appendChild(timeLine)
+      tbody.appendChild(timeLineDot)
+      tbody.appendChild(timeText)
+      let tbodyHeight = tbody.getBoundingClientRect().height
+      let minutes = 24 * 60 // 一天的总分钟数
+      // 已经过去的分钟
+      this.timer = setInterval(() => {
+        let goneMinutes = new Date().getHours() * 60 + new Date().getMinutes()
+        timeLine.style.top = (goneMinutes / minutes * tbodyHeight) + 'px'
+        timeLineDot.style.top = (goneMinutes / minutes * tbodyHeight - 5) + 'px'
+        timeText.style.top = (goneMinutes / minutes * tbodyHeight - 5) + 'px'
+        timeText.innerText = this.handleDateFormat(new Date())
+      }, 1000);
+    },
+    handleDatesSet(value) {
+      if (value.view.type === "timeGridDay" || value.view.type === "timeGridWeek") {
+        this.rebuildFullendar()
+      } else {
+        if (this.timer) {
+          clearInterval(this.timer)
+          this.timer = null
+        }
+      }
+    },
     hendleChangelangue() {
       this.calendarOptions.locale = this.calendarOptions.locale === zhLocale ? 'en' : zhLocale
     },
@@ -339,7 +382,7 @@ b {
 }
 .demo-app {
   display: flex;
-  min-height: 100%;
+  min-height: 700px;
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -373,6 +416,37 @@ b {
 .fc {
   max-width: 1100px;
   margin: 0 auto;
+  .fc-timegrid-slots {
+      .tbodyclass {
+        position: relative;
+        .now-time {
+          position: absolute;
+          left: 61px;
+          top: 0;
+          width: 100%;
+          height: 1px;
+          background: red;
+        }
+        .now-time-dot {
+          position: absolute;
+          left: 61px;
+          top: 0;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: red;
+        }
+        .now-time-text {
+          position: absolute;
+          left: 20px;
+          top: 0;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          color: red;
+        }
+      }
+  }
 }
 .popperClass {
   position: fixed;
