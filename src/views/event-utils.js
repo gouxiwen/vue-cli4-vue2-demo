@@ -19,11 +19,11 @@ export const INITIAL_EVENTS = [
     id: 1,
     resourceId: 1,
     title: '李四',
-    // start: todayStr + 'T12:00:00',
-    start: '2021-03-16 12:00:00',
-    // end: todayStr + 'T15:00:00',
+    start: todayStr + 'T12:00:00',
+    // start: '2021-03-16 12:00:00',
+    end: todayStr + 'T15:00:00',
     // end: '1615878000000',  // 不支持的时间格式
-    end: 1615878000000,
+    // end: 1615878000000,
     backgroundColor: 'green',
     borderColor: 'green',
     editable: false
@@ -45,8 +45,38 @@ export const INITIAL_EVENTS = [
     id:3,
     resourceId: 1,
     title: '事件',
-    start: '2021-03-30 12:00:00',
-    end: '2021-03-30 14:00:00',
+    // start: '2021-03-30 12:00:00',
+    // end: '2021-03-30 14:00:00',
+    start: todayStr + 'T16:00:00',
+    end: todayStr + 'T18:00:00',
+    backgroundColor: 'gray',
+    borderColor: 'gray'
+  },
+  {
+    id:4,
+    resourceId: 1,
+    title: '事件',
+    start: '2021-05-12 12:00:00',
+    end: '2021-05-12 14:00:00',
+    backgroundColor: 'gray',
+    borderColor: 'gray'
+  },
+  {
+    id:5,
+    resourceId: 1,
+    title: '全天事件',
+    start: '2021-05-26 10:00:00',
+    end: '2021-05-26 16:00:00',
+    allDay: true,
+    backgroundColor: 'gray',
+    borderColor: 'gray'
+  },
+  {
+    id:6,
+    resourceId: 1,
+    title: '事件',
+    start: '2021-05-12 12:00:00',
+    end: '2021-05-12 14:00:00',
     backgroundColor: 'gray',
     borderColor: 'gray'
   },
@@ -57,8 +87,8 @@ export const INITIAL_EVENTS = [
     color: '#ff9f89'
   },
   {
-    start: '2021-04-01 10:00:00',
-    end: '2021-04-01 16:00:00',
+    start: '2021-05-26 10:00:00',
+    end: '2021-05-26 16:00:00',
     allDay: true,
     display: 'background',
     color: 'pink'

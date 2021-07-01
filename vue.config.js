@@ -4,6 +4,7 @@ if (context === 'calljs') {
 } else {
   module.exports = {
     lintOnSave: true, // 配置eslint-loader 取值有true，false，error，取error就会在浏览器页面显示
+    publicPath: './',
     devServer: {
       port: 8100,
       open: true,

@@ -1,6 +1,6 @@
 
 <template>
-  <div @click="visible = false" class='demo-app'>
+  <div class='demo-app'>
     <!-- <div class='demo-app-sidebar'>
       <div class='demo-app-sidebar-section'>
         <h2>Instructions</h2>
@@ -53,7 +53,7 @@
       width="400"
       trigger="click"
       v-model="visible">
-      <div class="pop-solt" @click.stop="() => {}">
+      <div class="pop-solt" v-click-outside="hide">
         这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
         这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
         这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容 这里有很多内容
@@ -80,6 +80,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import zhLocale from '@fullcalendar/core/locales/zh-cn';
 import moment from "moment";
+import ClickOutside from 'vue-click-outside';
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -136,7 +137,7 @@ export default {
         selectable: true, // 是否允许用户单击或者拖拽日历中的天和时间隙
         selectMirror: true, // 用户拖动时是否绘制“占位符”事件。
         dayMaxEvents: false, // 限制一天的最大数，超出日历块高度后就用more显示，默认false
-        dayMaxEventRows: false, // 限制一天的最大事件行数，超出行数后就用more显示，默认false
+        dayMaxEventRows: 2, // 限制一天的最大事件行数，超出行数后就用more显示，默认false
         weekends: true, // 是否显示周末
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
@@ -144,6 +145,25 @@ export default {
         eventResize: this.handleEventResize,
         datesSet: this.handleDatesSet,
         height: "100%",
+        // titleFormat: { // will produce something like "Tuesday, September 18, 2018"
+        //   month: 'long',
+        //   year: 'numeric',
+        //   day: 'numeric',
+        //   weekday: 'long',
+        // },
+        titleFormat: this.handleTitleFormat,
+        slotLabelFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          omitZeroMinute: false,
+          hour12: false,
+        },
+        eventTimeFormat: { // like '14:30:00'
+          hour: '2-digit',
+          minute: '2-digit',
+          // second: '2-digit',
+          hour12: false
+        },
         // locale: 'zh-cn'
         locale: zhLocale,
         firstDay: 0, // 第一天从周日开始
@@ -215,7 +235,13 @@ export default {
               return { start: startDate, end: endDate }
             },
             buttonText: '自定义视图'
-          }
+          },
+          dayGridMonth: {
+                dayHeaderFormat: { weekday: 'short' }
+          },
+          timeGridWeek: {
+            dayHeaderFormat: { weekday: 'short', day: 'numeric' }
+          },
         },
         /* you can update a remote database when these fire:
         eventAdd:
@@ -225,12 +251,14 @@ export default {
       },
       currentEvents: [],
       clickCount: 0, // 用来模拟双击事件
+      isAppendChilded: false, // 是否已经添加了当前时间线
     }
   },
   mounted() {
       setTimeout(() => {
           this.calendarOptions.events = INITIAL_EVENTS
       }, 10);
+      console.log('this.$route.query', this.$route.query)
   },
   destroyed() {
     if (this.timer) {
@@ -238,32 +266,53 @@ export default {
       this.timer = null
     }
   },
+  directives: {
+    ClickOutside
+  },
   methods: {
     // 对组件做一些二次加工，添加当前时间线
     rebuildFullendar() {
-      clearInterval(this.timer)
-      this.timer = null
-      let tbody = document.querySelector('.fc-timegrid-slots table tbody')
-      tbody.className = 'tbodyclass'
-      let timeLine = document.createElement("div")
-      timeLine.className = 'now-time'
-      let timeLineDot = document.createElement("div")
-      timeLineDot.className = 'now-time-dot'
-      let timeText = document.createElement("div")
-      timeText.className = 'now-time-text'
-      tbody.appendChild(timeLine)
-      tbody.appendChild(timeLineDot)
-      tbody.appendChild(timeText)
-      let tbodyHeight = tbody.getBoundingClientRect().height
-      let minutes = 24 * 60 // 一天的总分钟数
-      // 已经过去的分钟
-      this.timer = setInterval(() => {
-        let goneMinutes = new Date().getHours() * 60 + new Date().getMinutes()
-        timeLine.style.top = (goneMinutes / minutes * tbodyHeight) + 'px'
-        timeLineDot.style.top = (goneMinutes / minutes * tbodyHeight - 5) + 'px'
-        timeText.style.top = (goneMinutes / minutes * tbodyHeight - 5) + 'px'
-        timeText.innerText = this.handleDateFormat(new Date())
-      }, 1000);
+        clearInterval(this.timer)
+        this.timer = null
+        this.$nextTick(() => {
+          let tbody = document.querySelector('.fc-timegrid-slots table tbody')
+          if(tbody) {
+            tbody.className = 'tbodyclass'
+            let tbodyHeight = tbody.getBoundingClientRect().height
+            let slotLable = document.querySelector('.fc-timegrid-slots table tbody .fc-timegrid-slot-label')
+            let slotLableWidth = slotLable.getBoundingClientRect().width
+            let minutes = 24 * 60 // 一天的总分钟数
+            let timeLine = document.querySelector('.fc-timegrid-slots table tbody .now-time')
+            let timeLineDot = document.querySelector('.fc-timegrid-slots table tbody .now-time-dot')
+            let timeText = document.querySelector('.fc-timegrid-slots table tbody .now-time-text')
+            if (!timeLine) {
+              timeLine = document.createElement("div")
+              timeLine.className = 'now-time'
+              timeLineDot = document.createElement("div")
+              timeLineDot.className = 'now-time-dot'
+              timeText = document.createElement("div")
+              timeText.className = 'now-time-text'
+              tbody.appendChild(timeLine)
+              tbody.appendChild(timeLineDot)
+              tbody.appendChild(timeText)
+            }
+            this.timer = setInterval(() => {
+              // 已经过去的分钟
+              let goneMinutes = new Date().getHours() * 60 + new Date().getMinutes()
+              timeLine.style.top = (goneMinutes / minutes * tbodyHeight) + 'px'
+              timeLine.style.left = (slotLableWidth - 5) + 'px'
+              timeLineDot.style.top = (goneMinutes / minutes * tbodyHeight - 5) + 'px'
+              timeLineDot.style.left = (slotLableWidth - 5) + 'px'
+              timeText.style.width = slotLableWidth + 'px'
+              timeText.style.top = (goneMinutes / minutes * tbodyHeight - 10) + 'px'
+              timeText.innerText = this.handleDateFormat(new Date())
+            }, 1000);
+          }
+        })
+    },
+    handleTitleFormat(date) {
+      console.log('handleTitleFormat', date)
+      return date.date.year + '-' + (date.date.month + 1)
     },
     handleDatesSet(value) {
       if (value.view.type === "timeGridDay" || value.view.type === "timeGridWeek") {
@@ -274,6 +323,9 @@ export default {
           this.timer = null
         }
       }
+      // console.log('dateInfo', value.view)
+      console.log('year', new Date(value.view.getCurrentData().currentDate).getFullYear())
+      console.log('month', new Date(value.view.getCurrentData().currentDate).getMonth() + 1)
     },
     hendleChangelangue() {
       this.calendarOptions.locale = this.calendarOptions.locale === zhLocale ? 'en' : zhLocale
@@ -295,18 +347,18 @@ export default {
       },300)
     },
     handleClickSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
+      // let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
       calendarApi.unselect() // clear date selection
-      if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
-      }
+      // if (title) {
+      //   calendarApi.addEvent({
+      //     id: createEventId(),
+      //     title,
+      //     start: selectInfo.startStr,
+      //     end: selectInfo.endStr,
+      //     allDay: selectInfo.allDay
+      //   })
+      // }
     },
     handleDbClickSelect() {
       
@@ -359,6 +411,9 @@ export default {
     },
     handleDateFormat(time, format = 'HH:mm') {
       return moment(time).format(format)
+    },
+    hide() {
+      this.visible = false
     }
   }
 }
@@ -421,7 +476,7 @@ b {
         position: relative;
         .now-time {
           position: absolute;
-          left: 61px;
+          left: 0;
           top: 0;
           width: 100%;
           height: 1px;
@@ -429,7 +484,7 @@ b {
         }
         .now-time-dot {
           position: absolute;
-          left: 61px;
+          left: 0;
           top: 0;
           width: 10px;
           height: 10px;
@@ -438,12 +493,15 @@ b {
         }
         .now-time-text {
           position: absolute;
-          left: 20px;
+          left: 0;
           top: 0;
           width: 10px;
           height: 10px;
           border-radius: 50%;
           color: red;
+          height: 21px;
+          line-height: 21px;
+          text-align: center;
         }
       }
   }

@@ -63,6 +63,14 @@ export default new Router({
       meta: {
         index: 0,
       },
+    },
+    {
+      path: '/grid',
+      name: 'grid',
+      component: () => import('../views/grid.vue'),
+      meta: {
+        index: 0,
+      },
     }
   ]
 })
