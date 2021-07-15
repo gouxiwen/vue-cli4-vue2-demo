@@ -19,7 +19,7 @@ if (context === 'calljs') {
           //   '^/testApi': ''
           // },
           // target: 'https://mtest.getech.cn',
-          target: 'https://teamwork.getech.cn/',
+          target: '',
           secure: false,
           changeOrigin: true
           // logLevel: 'debug'

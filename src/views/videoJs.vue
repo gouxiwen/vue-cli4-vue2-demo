@@ -11,7 +11,7 @@
     >
       <source
         ref="source"
-        src="https://mtestdl.getech.cn/1609234676926_7fd8f574ff352589113bdb8deb74ed44.mp4"
+        src=""
         type="video/mp4"
       />
     </video>
@@ -41,7 +41,6 @@ export default {
           this.showVideo = true;
           // this.$nextTick(() => {
           // this.$refs.source.src =
-          //   "https://mtestdl.getech.cn/1609235320417_afc97e69d85a2a899ec65f4a8198b064.mp4";
           // console.log(this.$refs.video);
           // this.$refs.video.load();
           //   });

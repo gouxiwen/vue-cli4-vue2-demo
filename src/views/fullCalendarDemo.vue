@@ -134,6 +134,7 @@ export default {
         eventResizableFromStart: true, // 默认false  是否允许编辑开始时间
         eventDurationEditable: true, //  是否允许编辑时间的持续时间，也就是结束时间，全局设置，单个事件的durationEditable可以覆盖
         eventResourceEditable: false, // 是否允许资源resources编辑，次选项默认false但是继承editable，如果要单独设置resources，则将editable设为false，将此设为true，全局设置，单个事件的resourceEditable可以覆盖
+        eventColor: '#99a1a9', // 设置所有日程事件的背景色和边框颜色，值为字符串类型，此设置可以被每个数据源（Event Source Object）的color属性和每个日程（Event Object）的color属性覆盖。
         selectable: true, // 是否允许用户单击或者拖拽日历中的天和时间隙
         selectMirror: true, // 用户拖动时是否绘制“占位符”事件。
         dayMaxEvents: false, // 限制一天的最大数，超出日历块高度后就用more显示，默认false
@@ -349,7 +350,7 @@ export default {
     handleClickSelect(selectInfo) {
       // let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
-      calendarApi.unselect() // clear date selection
+      // calendarApi.unselect() // clear date selection
       // if (title) {
       //   calendarApi.addEvent({
       //     id: createEventId(),

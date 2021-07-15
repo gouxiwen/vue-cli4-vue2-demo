@@ -48,11 +48,11 @@
 let qiniu = require("qiniu-js");
 import http from "../config/http";
 // import axios from 'axios'
-const testQiniuUrl = "https://mtestdl.getech.cn/"; // 测试环境访问地址
-const prodQiniuUrl = "https://teamworkdl.getech.cn/"; // 正式环境访问地址
-const testDemon = "https://mtest.getech.cn/"; // 测试环境
+const testQiniuUrl = ""; // 测试环境访问地址
+const prodQiniuUrl = ""; // 正式环境访问地址
+const testDemon = ""; // 测试环境
 // const testDemon = ""; // 测试环境访问地址 代理不成功
-// const prodDemon = 'https://teamwork.getech.cn/'; // 生产环境 直接访问不成功
+// const prodDemon = ''; // 生产环境 直接访问不成功
 const prodDemon = ""; //  代理成功
 // let path = require('path'); // 启用node环境下可用
 import callPc from "../../packages/CallTlinkpc.min.js";
