@@ -18,7 +18,7 @@ if (context === 'calljs') {
           // pathRewrite: {
           //   '^/testApi': ''
           // },
-          // target: 'https://mtest.getech.cn',
+          // target: '',
           target: '',
           secure: false,
           changeOrigin: true
