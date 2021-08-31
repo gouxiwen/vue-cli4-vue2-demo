@@ -71,6 +71,22 @@ export default new Router({
       meta: {
         index: 0,
       },
+    },
+    {
+      path: '/viewer',
+      name: 'viewer',
+      component: () => import('../views/v-viewer.vue'),
+      meta: {
+        index: 0,
+      },
+    },
+    {
+      path: '/v-html',
+      name: 'v-html',
+      component: () => import('../views/v-html.vue'),
+      meta: {
+        index: 0,
+      },
     }
   ]
 })

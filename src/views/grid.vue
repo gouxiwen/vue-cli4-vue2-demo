@@ -90,7 +90,7 @@ export default {
       display: grid;
       grid-template-columns: repeat(3, 33.33%);
       grid-template-rows: repeat(2, 100px);
-      grid-auto-rows: 50px;  // 指定自动生成的网格高度，默认更加内容填充
+      grid-auto-rows: 50px;  // 指定自动生成的网格高度，默认根据内容填充
       border: 1px solid;
       margin-top: 5px;
       .item {
@@ -147,7 +147,7 @@ export default {
       display: grid;
       grid-template-columns: 100px 100px 100px;
       grid-template-rows: 100px 100px 100px;
-      grid-auto-flow: column;
+      grid-auto-flow: column; // 属性控制自动放置的项目如何插入网格中。
       border: 1px solid;
       margin-top: 5px;
       .item1 {

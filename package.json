@@ -21,6 +21,7 @@
     "element-ui": "^2.13.0",
     "moment": "^2.29.1",
     "qiniu-js": "^2.5.5",
+    "v-viewer": "^1.6.4",
     "vue": "^2.6.12",
     "vue-calendar-component": "^2.8.2",
     "vue-click-outside": "^1.1.0",

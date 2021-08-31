@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app-compotent">
     <router-link to="/upload">upload</router-link>|
     <router-link to="/calendar">calendar</router-link>|
     <router-link to="/calendar1">calendar1</router-link>|
@@ -8,6 +8,8 @@
     <router-link to="/videoJs">videoJs</router-link>|
     <router-link to="/fullCalendarDemo">fullCalendarDemo|</router-link>
     <router-link to="/grid">栅格容器</router-link>
+    <router-link to="/viewer">图片预览</router-link>
+    <router-link to="/v-html">v-html</router-link>
     <router-view></router-view>
   </div>
 </template>
@@ -27,7 +29,7 @@ export default {
 </script>
 
 <style>
-#app {
+#app-compotent {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

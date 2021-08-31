@@ -19,7 +19,7 @@ if (context === 'calljs') {
           //   '^/testApi': ''
           // },
           // target: '',
-          target: '',
+          target: 'http://localhost:8100',
           secure: false,
           changeOrigin: true
           // logLevel: 'debug'

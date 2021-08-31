@@ -55,7 +55,7 @@ const testDemon = ""; // 测试环境
 // const prodDemon = ''; // 生产环境 直接访问不成功
 const prodDemon = ""; //  代理成功
 // let path = require('path'); // 启用node环境下可用
-import callPc from "../../packages/CallTlinkpc.min.js";
+// import callPc from "../../packages/CallTlinkpc.min.js";
 // import callPc from '../config/CallTlinkpc.js'
 // let callPc = window.callPc
 export default {
@@ -76,6 +76,7 @@ export default {
     };
   },
   mounted() {
+    console.log('data', this.$data)
     // let _self = this
     // window.addEventListener("message", (event) => {
     //   console.log(event)
@@ -88,65 +89,65 @@ export default {
     //   }
     // }, false );
     // this.callTlinkpc('getUserInfo_cb')
-    let multiple = [
-      {
-        fun: "getUserInfo_cb",
-      },
-      {
-        fun: "getUserInfo_cb",
-      },
-      // {
-      //   fun: 'openContactDialog_cb',
-      //   data: {
-      //     selectMemberType: 'cc',
-      //     selectMembersUsers: this.selectMembersUsers
-      //   }
-      // }
-    ];
-    // 只能调用立即返回的方法，不然会阻塞后面方法的执行
-    callPc.callTlinkpc2("initMultiple", multiple).then((res) => {
-      console.log(res);
-    });
-    callPc.on("taskNotify", () => {
-      console.log("taskNotify");
-    });
-    // 关闭窗口事件监听
-    callPc.on("windowClose_cb", async () => {
-      try {
-        let res = await this.$confirm("是否离开", "提示", {
-          confirmButtonText: "确认",
-          cancelButtonText: "取消",
-          type: "warning",
-          center: true,
-        });
-        if (res) callPc.cbToTlink("windowClose_cb", true);
-      } catch (error) {
-        console.log(error);
-        callPc.cbToTlink("windowClose_cb", false);
-      }
-    });
+    // let multiple = [
+    //   {
+    //     fun: "getUserInfo_cb",
+    //   },
+    //   {
+    //     fun: "getUserInfo_cb",
+    //   },
+    //   // {
+    //   //   fun: 'openContactDialog_cb',
+    //   //   data: {
+    //   //     selectMemberType: 'cc',
+    //   //     selectMembersUsers: this.selectMembersUsers
+    //   //   }
+    //   // }
+    // ];
+    // // 只能调用立即返回的方法，不然会阻塞后面方法的执行
+    // callPc.callTlinkpc2("initMultiple", multiple).then((res) => {
+    //   console.log(res);
+    // });
+    // callPc.on("taskNotify", () => {
+    //   console.log("taskNotify");
+    // });
+    // // 关闭窗口事件监听
+    // callPc.on("windowClose_cb", async () => {
+    //   try {
+    //     let res = await this.$confirm("是否离开", "提示", {
+    //       confirmButtonText: "确认",
+    //       cancelButtonText: "取消",
+    //       type: "warning",
+    //       center: true,
+    //     });
+    //     if (res) callPc.cbToTlink("windowClose_cb", true);
+    //   } catch (error) {
+    //     console.log(error);
+    //     callPc.cbToTlink("windowClose_cb", false);
+    //   }
+    // });
   },
   methods: {
-    send() {
-      let data = {
-        selectMemberType: "cc",
-        selectMembersUsers: this.selectMembersUsers,
-      };
-      callPc.callTlinkpc("openContactDialog_cb", data).then((res) => {
-        console.log(res);
-        this.selectMembersUsers = res;
-      });
-    },
-    send2() {
-      let data = {
-        selectMemberType: "cc",
-        selectMembersUsers: this.selectMembersUsers,
-      };
-      callPc.callTlinkpc2("openContactDialog_cb", data).then((res) => {
-        console.log("res2", res);
-        this.selectMembersUsers = res;
-      });
-    },
+    // send() {
+    //   let data = {
+    //     selectMemberType: "cc",
+    //     selectMembersUsers: this.selectMembersUsers,
+    //   };
+    //   callPc.callTlinkpc("openContactDialog_cb", data).then((res) => {
+    //     console.log(res);
+    //     this.selectMembersUsers = res;
+    //   });
+    // },
+    // send2() {
+    //   let data = {
+    //     selectMemberType: "cc",
+    //     selectMembersUsers: this.selectMembersUsers,
+    //   };
+    //   callPc.callTlinkpc2("openContactDialog_cb", data).then((res) => {
+    //     console.log("res2", res);
+    //     this.selectMembersUsers = res;
+    //   });
+    // },
     async beforeUploadTest(file) {
       this.uploadFileObj.file = file;
       let type = file.name.substr(
