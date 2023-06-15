@@ -1,24 +1,9 @@
-# 这是一个综合代码，里面有七牛上传/打包sdk/还有几个日历demo，还有在这里试验一些组件的使用
+# 这是一个基于vue/cli4+vue2的演示demo
+## 
+- 打包sdk的webpack配置
 
-## Project setup
-```
-npm install
-```
+- 七牛上传
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- FullCalendar使用
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- 日历组件使用
